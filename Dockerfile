@@ -1,16 +1,13 @@
 FROM python:3.10-slim
 
-WORKDIR /rembg
+WORKDIR /app
 
-RUN pip install --upgrade pip
-
-RUN apt-get update && apt-get install -y curl && apt-get clean && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN python -m pip install ".[cpu,cli]"
+# Download the default model
 RUN rembg d u2net
 
-EXPOSE 7000
-ENTRYPOINT ["rembg"]
-CMD ["--help"]
+CMD ["python", "runpod_handler.py"]
