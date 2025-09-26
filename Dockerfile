@@ -1,14 +1,14 @@
+# Use the official Python image.
 FROM python:3.10-slim
 
+# Set the working directory.
 WORKDIR /app
 
-# Copy all files from the build context first
+# Copy the application files.
 COPY . .
 
-# List the files in the current directory to see what's in the build context
-RUN ls -la
+# Install the rembg package and all its dependencies.
+RUN pip install ".[cpu,cli]"
 
-# Now, install the dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
+# Set the command to run the RunPod handler.
 CMD ["python", "runpod_handler.py"]
